@@ -1,0 +1,43 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    background: black;
+    color: white;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+}
+
+#window_border {
+    border: 1px solid #666;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+#window_container {
+    padding: 10px;
+}
+
+input, button, select{
+    -webkit-app-region: no-drag;
+}
+
+#close_window {
+    position: fixed;
+    right: 0%;
+    top: 0%
+}
+
+.form-select {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-group-lg>.btn, .btn-xlg {
+    padding: .8rem 1rem;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+}

@@ -1,0 +1,6 @@
+node_modules/
+recordings/*
+dist/
+app/node_modules/
+*-lock.json
+*.log

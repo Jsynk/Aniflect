@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Aniflect</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+</head>
+<body>
+    <div id="window_border"></div>
+    <div id="window_container">
+        <div id="bake_folder_ui">
+            <div class="form-floating d-inline-block" style="min-width:200px;">
+                <select id="folders_select" class="form-select"></select>
+                <label for="folders_select">Select folder to bake</label>
+            </div>
+            <button id="bake" class="btn btn-outline-danger btn-xlg me-2 align-top bi-box"> Bake</button>
+            <button id="record" class="btn btn-outline-danger btn-xlg align-top bi-camera"> Record</button>
+        </div>
+        <div id="record_ui" style="display:none;">
+            <div>
+                <button class="back_to_bake btn btn-outline-danger bi-box-arrow-in-left"> Back to folder select</button>
+                <input id="record_folder_name" placeholder="Recoring folder name" type="text"/>
+                <label>
+                    <input id="record_color" type="checkbox"/>
+                    <label>Record Color</label>
+                </label>
+                <button id="init_recording" class="btn btn-outline-danger bi-record-fill"> Start recording</button>
+                <button id="stop_recording" class="btn btn-outline-danger bi-stop-fill"> Stop recording</button>
+            </div>
+            <div>
+                <button id="start_server" class="btn btn-outline-danger bi-globe2"> Start server</button>
+                <button id="connect_to_server" class="btn btn-outline-danger bi-globe"> Connect to server</button>
+                <input id="connect_ipaddress" type="text"/>
+            </div>
+        </div>
+        <div id="frames_ui" style="display:none;">
+            <div>
+                <button class="back_to_bake btn btn-outline-danger bi-box-arrow-in-left"> Back to folder select</button>
+                <label>Preview frame</label>
+                <select id="frames_select"></select>
+            </div>
+            <br>
+            <div>
+                <label>Start bake frame</label>
+                <select id="bake_start_select"></select>
+                <button id="bake_start_as_preview" class="btn btn-outline-danger bi-clipboard"> preview</button>
+
+                <label>End bake frame</label>
+                <select id="bake_end_select"></select>
+                <button id="bake_end_as_preview" class="btn btn-outline-danger bi-clipboard"> preview</button>
+            </div>
+            <br>
+            <div>
+                <label id="bg_frame_label"></label>
+                <button id="bg_frame_as_preview" class="btn btn-outline-danger bi-clipboard"> preview</button>
+                <button id="bg_frame_as_none" class="btn btn-outline-danger bi-trash"> Clear selected</button>
+                <button id="init_baking" class="btn btn-outline-danger bi-box"> Bake</button>
+            </div>
+        </div>
+        <br>
+        <div>
+            <canvas id="canvas" width="512" height="424"></canvas>
+            <canvas id="canvas2" width="512" height="424"></canvas>
+        </div>
+        <button id="close_window" class="btn btn-outline-danger bi-x-circle"></button>
+    </div>
+    <script src="js/index.js"></script>
+</body>
+</html>
