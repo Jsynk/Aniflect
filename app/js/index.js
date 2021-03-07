@@ -619,6 +619,7 @@ function bake_cur_image() {
 
 var import_py_script = [
     'import bpy\r\n',
+    'from os import listdir\r\n',
     'def compile_script(file_path):\r\n',
     '\texec(compile(open(file_path).read(), file_path, "exec"))\r\n',
 
@@ -626,9 +627,10 @@ var import_py_script = [
     'init_filename = rel_path + "01_init_import.py"\r\n',
     'compile_script(init_filename)\r\n',
 
-    'for i in range( 0, {END_FRAME} ):\r\n',
-    '\tfilename = rel_path + "d_" + str(i) + ".py"\r\n',
-    '\tcompile_script(filename)\r\n',
+    'files = listdir(rel_path)',
+    'for file in files:',
+    '\tif file[:2] == "d_":\r\n',
+    '\t\tcompile_script(file)\r\n',
 
     'end_filename = rel_path + "02_end_import.py"\r\n',
     'compile_script(end_filename)',
