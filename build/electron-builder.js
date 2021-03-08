@@ -13,9 +13,14 @@ builder.build({
             app: '.'
         },
         win: {
-            target: 'portable',
+            target: 'NSIS',
             // icon: 'build/icon.ico'
         },
+        // publish: [{
+        //     provider: "github",
+        //     owner: "Jsynk",
+        //     repo: "Aniflect"
+        // }],
         nodeVersion: '12.18.3',
         electronVersion: '11.3.0'
     }

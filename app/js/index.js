@@ -12,6 +12,12 @@ var fs = require('fs'),
     path = require('path'),
     jk = require('jsynk');
 
+// Listen for messages
+const {ipcRenderer} = require('electron');
+ipcRenderer.on('message', function(event, text) {
+  console.log(text)
+})
+
 var qs = selector => document.querySelector(selector)
 var qsa = selector => document.querySelectorAll(selector)
 
@@ -42,6 +48,7 @@ function get_dir_files(dir, cb) {
 make_dir('recordings', err => {})
 
 var cwd = process.cwd()
+console.log(process.env)
 
 var depthWidth = 512, depthHeight = 424
 

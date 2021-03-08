@@ -6,6 +6,10 @@
     "author": {
         "name": "jSynk"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Jsynk/Aniflect.git"
+    },
     "scripts": {
         "start": "electron .",
         "build": "node ./build/electron-builder.js"
@@ -13,7 +17,8 @@
     "dependencies": {
         "jsynk": "^2.0.0",
         "kinect2": "^0.2.1",
-        "ws": "^7.4.3"
+        "ws": "^7.4.3",
+        "electron-updater": "^4.3.8"
     },
     "devDependencies": {
         "electron": "^11.2.3",

@@ -42,7 +42,7 @@ To install and then run
 ```
 npm run start
 ```
-to startup electron and optionally run
+to startup electron or optionally run
 ```
 npm run build
 ```
