@@ -12,31 +12,52 @@ var fs = require('fs'),
     path = require('path'),
     jk = require('jsynk');
 
-// Listen for messages
-const {ipcRenderer} = require('electron');
-ipcRenderer.on('message', function(event, text) {
-  console.log(text)
+const { shell, ipcRenderer } = require('electron')
+var cwd = process.cwd()
+var ud_dir = cwd
+
+ipcRenderer.on('message', function (event, text) { 
+    var json = text
+    try {
+        json = JSON.parse(text)
+    } catch (err) { }
+    // console.log(json)
+    if(typeof json == 'object' && json != null){
+        if(json.type == 'userData'){
+            ud_dir = dir = json.path
+            make_dir(ud_dir+'/recordings', err => { })
+            updateRecordingsFiles()
+        }
+    }
 })
 
 var qs = selector => document.querySelector(selector)
 var qsa = selector => document.querySelectorAll(selector)
 
+qs('#open_recordings').addEventListener('click', () => {
+    shell.openPath(ud_dir+'\\recordings')
+})
+
+qs('#open_selected_recordings').addEventListener('click', () => {
+    shell.openPath(dir)
+})
+
 qs('#close_window').addEventListener('click', () => {
     window.close()
 })
 
-function make_dir(dir, cb) {
-    fs.stat(path.resolve(dir), (err, stats) => {
+function make_dir(dirpath, cb) {
+    fs.stat(dirpath, (err, stats) => {
         if (err && err.errno === -4058) {
-            fs.mkdir(dir, cb)
+            fs.mkdir(dirpath, cb)
         } else {
             cb(err)
         }
     })
 }
 
-function get_dir_files(dir, cb) {
-    fs.readdir(path.resolve(dir), (err, content) => {
+function get_dir_files(dirpath, cb) {
+    fs.readdir(dirpath, (err, content) => {
         if (err) {
             cb([])
         } else {
@@ -44,11 +65,6 @@ function get_dir_files(dir, cb) {
         }
     })
 }
-
-make_dir('recordings', err => {})
-
-var cwd = process.cwd()
-console.log(process.env)
 
 var depthWidth = 512, depthHeight = 424
 
@@ -61,15 +77,11 @@ ctx.beginPath()
 ctx.rect(0, 0, depthWidth, depthHeight)
 ctx.fillStyle = 'black'
 ctx.fill()
-// ctx.translate(depthWidth/2, 0)
-// ctx.scale(-1, 1)
 
 ctx2.beginPath()
 ctx2.rect(0, 0, depthWidth, depthHeight)
 ctx2.fillStyle = 'black'
 ctx2.fill()
-// ctx2.scale(-1, 1)
-// ctx2.translate(depthWidth/2, 0)
 
 var blank_image = canvas.toDataURL('image/png', 1.0)
 
@@ -81,10 +93,10 @@ var imageData2 = ctx2.createImageData(canvas2.width, canvas2.height)
 var imageDataSize2 = imageData2.data.length
 var imageDataArray2 = imageData2.data
 
-var dir = ''
+var dir = ud_dir
 
-function updateRecordingsFiles(params) {
-    get_dir_files(cwd+'/recordings', (content) => {
+function updateRecordingsFiles() {
+    get_dir_files(ud_dir+'/recordings', (content) => {
         var options_html = ''
         for (var i = 0; i < content.length; i++) {
             var folder_name = content[i]
@@ -94,7 +106,6 @@ function updateRecordingsFiles(params) {
         qs('#folders_select').focus()
     })
 }
-updateRecordingsFiles()
 
 var bake_frames = []
 
@@ -106,7 +117,7 @@ qs('#bake').addEventListener('click', () => {
     qs('#bake_folder_ui').style.display = "none"
 
     folder_name = qs('#folders_select').value
-    dir = path.resolve(cwd+'/recordings/' + folder_name)
+    dir = path.resolve(ud_dir + '/recordings/' + folder_name)
 
     var depth_files = []
     var depth_color_files = []
@@ -203,7 +214,7 @@ qs('#frames_select').addEventListener('change', () => {
         if (err) return
         fs.read(fd, kdcs_buffer, 0, kdcs_buffer.length, depth_color_byte_position, (err, num, a2, a3) => {
             if (!err) {
-                for (var i = 0; i < imageDataSize; i+=4) {
+                for (var i = 0; i < imageDataSize; i += 4) {
                     var px = i % (depthWidth * 4)
                     var pxo = (i - px) + (depthWidth * 4 - px)
                     imageDataArray[pxo - 4] = kdcs_buffer[i - 4]
@@ -619,8 +630,11 @@ function bake_cur_image() {
             if (err) { }
         })
 
-        fs.createReadStream(cwd + '/app/00_IMPORT_ME.blend')
-        .pipe(fs.createWriteStream(dir + '/import/00_IMPORT_ME.blend'))
+        fs.writeFile(dir + '/import/00_IMPORT_ME.blend', files['00_IMPORT_ME.blend'], (err)=>{
+            if (err) { }
+        })
+        // fs.createReadStream(cwd+'/app/00_IMPORT_ME.blend')
+        //     .pipe(fs.createWriteStream(dir + '/import/00_IMPORT_ME.blend'))
     }
 }
 
@@ -733,7 +747,7 @@ var Kinect2 = null
 var kinect = null
 
 var s = new jk.sub()
-s.set({p:'',v:{}})
+s.set({ p: '', v: {} })
 
 var depth_stream, depth_stream_frames, depth_color_stream, depth_color_stream_frames
 var depth_color_opened = false
@@ -743,13 +757,13 @@ s.on({
         if (cam == 'open') {
             var rec_folder = qs('#record_folder_name').value || new Date().getTime()
             qs('#record_folder_name').value = ''
-            var dir_path = 'recordings/' + rec_folder
+            var dir_path = ud_dir + '/recordings/' + rec_folder
 
             var record_color = depth_color_opened = qs('#record_color').checked
 
             var recurser = jk.async_recursive({
                 complete: () => {
-                    if(!Kinect2){
+                    if (!Kinect2) {
                         Kinect2 = require('kinect2')
                         kinect = new Kinect2()
                     }
@@ -757,15 +771,15 @@ s.on({
                         kinect.on('multiSourceFrame', frame => {
                             if (rec_folder) {
                                 var time = new Date().getTime()
-        
+
                                 var depth_buffer = frame.rawDepth.buffer
                                 depth_stream.write(depth_buffer)
                                 depth_stream_frames.write(time.toString() + ',')
-                                
-                                if(record_color) {
+
+                                if (record_color) {
                                     var depth_color_buffer = frame.depthColor.buffer
                                     depth_color_stream.write(depth_color_buffer)
-                                    depth_color_stream_frames.write(time.toString()+',')
+                                    depth_color_stream_frames.write(time.toString() + ',')
                                 }
                             }
                         })
@@ -787,14 +801,14 @@ s.on({
                     fs.mkdir(dir_path + '/depth', (err) => {
                         depth_stream = fs.createWriteStream(dir_path + '/depth/stream.kds')
                         depth_stream_frames = fs.createWriteStream(dir_path + '/depth/frames.txt')
-                        recurser.done();
+                        recurser.done()
                     })
-                    if(record_color){
+                    if (record_color) {
                         recurser.wait()
                         fs.mkdir(dir_path + '/depth_color', (err) => {
                             depth_color_stream = fs.createWriteStream(dir_path + '/depth_color/stream.kdcs')
                             depth_color_stream_frames = fs.createWriteStream(dir_path + '/depth_color/frames.txt')
-                            recurser.done(); 
+                            recurser.done()
                         })
                     }
                     updateRecordingsFiles()
@@ -807,7 +821,7 @@ s.on({
             if (rec_folder) {
                 depth_stream.close()
                 depth_stream_frames.close()
-                if(depth_color_opened) {
+                if (depth_color_opened) {
                     depth_color_stream.close()
                     depth_color_stream_frames.close()
                 }
@@ -824,11 +838,11 @@ qs('#record').addEventListener('click', () => {
 })
 qs('#init_recording').addEventListener('click', () => {
     s.set({ p: 'cam', v: 'open' })
-    sendWsMessage({action:'setState', state: { p: 'cam', v: 'open' } })
+    sendWsMessage({ action: 'setState', state: { p: 'cam', v: 'open' } })
 })
 qs('#stop_recording').addEventListener('click', () => {
     s.set({ p: 'cam', v: 'close' })
-    sendWsMessage({action:'setState', state: { p: 'cam', v: 'close' } })
+    sendWsMessage({ action: 'setState', state: { p: 'cam', v: 'close' } })
 })
 
 const { networkInterfaces } = require('os')
@@ -841,7 +855,7 @@ for (const name of Object.keys(nets)) {
         }
     }
 }
-qs('#connect_ipaddress').value = 'ws://'+localIpAddress+':8080'
+qs('#connect_ipaddress').value = 'ws://' + localIpAddress + ':8080'
 
 let WebSocket = null
 let wss = null
@@ -852,43 +866,45 @@ qs('#start_server').addEventListener('click', () => {
 qs('#connect_to_server').addEventListener('click', () => {
     s.set({ p: 'connect', v: 'client' })
 })
-s.on({p:'connect',f:e=>{
-    const connect = s.get('connect')
-    if(!WebSocket){
-        WebSocket = require('ws')
-    }
-    if(connect == 'server') {
-        if(!wss){
-            wss = new WebSocket.Server({ port: 8080 })
-            wss.on('connection', ws => {
-                ws.on('message', handleWsMessage)
-            })
+s.on({
+    p: 'connect', f: e => {
+        const connect = s.get('connect')
+        if (!WebSocket) {
+            WebSocket = require('ws')
         }
-    } else if(connect == 'client') {
-        if(!ws){
-            ws = new WebSocket(qs('#connect_ipaddress').value)
+        if (connect == 'server') {
+            if (!wss) {
+                wss = new WebSocket.Server({ port: 8080 })
+                wss.on('connection', ws => {
+                    ws.on('message', handleWsMessage)
+                })
+            }
+        } else if (connect == 'client') {
+            if (!ws) {
+                ws = new WebSocket(qs('#connect_ipaddress').value)
+            }
+            ws.on('message', handleWsMessage)
         }
-        ws.on('message', handleWsMessage)
     }
-}})
+})
 
 const sendWsMessage = message => {
     message = JSON.stringify(message)
     const connect = s.get('connect')
-    if(connect == 'server') {
+    if (connect == 'server') {
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(message)
             }
         })
-    } else if(connect == 'client') {
+    } else if (connect == 'client') {
         ws.send(message)
     }
 }
 
 const handleWsMessage = data => {
     data = JSON.parse(data)
-    if(data.action == 'setState') {
+    if (data.action == 'setState') {
         s.set(data.state)
     }
 }

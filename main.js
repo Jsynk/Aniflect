@@ -1,11 +1,11 @@
-const {app, BrowserWindow, webContents} = require('electron')
+const { app, BrowserWindow } = require('electron')
 const { autoUpdater } = require("electron-updater")
 let win
 
 function createWindow () {
   win = new BrowserWindow({
     width: 1080,
-    height: 640,
+    height: 600,
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true
@@ -22,9 +22,9 @@ function createWindow () {
     win = null
   })
 
-  // win.on('ready-to-show', function () {
-  //   sendStatusToWindow('wut')
-  // })
+  win.on('ready-to-show', function () {
+    sendStatusToWindow(JSON.stringify({type:'userData', path: app.getPath('userData') }))
+  })
 
   autoUpdater.checkForUpdatesAndNotify()
 }

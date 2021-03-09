@@ -19,10 +19,10 @@ MIT
 
 ## Requirements
 
-- Windows 10
-- Blender 2.8 at least, 
-- Kinect for Windows v2 sensor with Kinect Adapter for Windows 10 PC(if you wanna record),
-- [Official Kinect 2 SDK](https://www.microsoft.com/en-us/download/details.aspx?id=44561) installed
+- Windows 10.
+- Blender 2.8 at least.
+- Kinect for Windows v2 sensor with Kinect Adapter for Windows 10 PC(if you wanna record).
+- [Official Kinect 2 SDK](https://www.microsoft.com/en-us/download/details.aspx?id=44561) installed.
 
 ## Install precompiled
 
@@ -46,23 +46,22 @@ to startup electron or optionally run
 ```
 npm run build
 ```
-To build a local windows portable executeable
+To build a local windows nsis executeable
 
 ## But why?
 
 Because since 2016~ish I wanted a cheap and more accurate motion capture setup.
-AI had many artifacts and cleanups and went nuts when rotating 360deg and rolls and so on.
+AI had many artifacts and cleanups and went nuts when rotating 360deg and rolling and so on.
 So I built this so one can frame for frame reflect the animation recorded.
 
 ## TODO!?!?
 
-- Add workflow/tutorial gifs/videos!
+- Update workflow/tutorial gifs/videos!
 - Add icon? Dash silhoutte?
 - Replace bootstrap with custom style?
-- Add timed counter before recording
+- Add timed counter before recording?
 - Add pre-compiled Electron build for windows
 - Add pre-compiled Electron build to github releases
-- Add auto-update?
 - Readd support for 2.79?
 
 ## Donate
