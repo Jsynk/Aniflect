@@ -1,5 +1,6 @@
 const builder = require('electron-builder')
 const Platform = builder.Platform
+// const publisher = builder.PublishManager
 
 builder.build({
     targets: Platform.WINDOWS.createTarget(),
@@ -14,6 +15,7 @@ builder.build({
         },
         win: {
             target: 'NSIS',
+            // publish: ['github'],
             // icon: 'build/icon.ico'
         },
         // publish: [{

@@ -60,12 +60,11 @@ So I built this so one can frame for frame reflect the animation recorded.
 - Add icon? Dash silhoutte?
 - Replace bootstrap with custom style?
 - Add timed counter before recording?
-- Add pre-compiled Electron build for windows
-- Add pre-compiled Electron build to github releases
 - Readd support for 2.79?
+- Add ui to notify update is available
 
 ## Donate
 
 Like this app? Donate some
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=6DWVP75DSX6XG)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=9Q2AVL5T8V8F8)
