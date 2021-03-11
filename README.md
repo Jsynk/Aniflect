@@ -5,7 +5,7 @@
 
 ## Video tutorials
 
-[Quick demo youtube](https://www.youtube.com/watch?v=bsBcWgT71OI)
+[Quick install and demo youtube](https://youtu.be/8wDGBp-jN-Y)
 
 ## Description
 
@@ -26,7 +26,10 @@ MIT
 
 ## Install precompiled
 
-TODO
+- Go to [Releases](https://github.com/Jsynk/Aniflect/releases)
+- Download [Aniflect.1.0.0-win.zip](https://github.com/Jsynk/Aniflect/releases/download/v1.0.0/Aniflect.1.0.0-win.zip)
+- Extract Aniflect.app folder somewhere
+- Then run Aniflect Setup 1.0.0.exe to install
 
 ## Install for development
 
@@ -62,6 +65,9 @@ So I built this so one can frame for frame reflect the animation recorded.
 - Add timed counter before recording?
 - Readd support for 2.79?
 - Add ui to notify update is available
+- Add ui to notify if server or client is connected
+- Add ui to notify on is recording
+- Do something about last frame in app and blender
 
 ## Donate
 
