@@ -64,10 +64,8 @@ So I built this so one can frame for frame reflect the animation recorded.
 - Replace bootstrap with custom style?
 - Add timed counter before recording?
 - Readd support for 2.79?
-- Add ui to notify update is available
-- Add ui to notify if server or client is connected
-- Add ui to notify on is recording
-- Do something about last frame in app and blender
+- Add baking details baked 24 frames in 32s, when finished?
+- Add better ui messages rather then draw text on canvas?
 
 ## Donate
 

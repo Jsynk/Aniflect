@@ -73,15 +73,30 @@ var canvas2 = qs('#canvas2')
 var ctx = canvas.getContext('2d')
 var ctx2 = canvas2.getContext('2d')
 
-ctx.beginPath()
-ctx.rect(0, 0, depthWidth, depthHeight)
-ctx.fillStyle = 'black'
-ctx.fill()
+function clearCanvas(c1, c2) {
+    ctx.beginPath()
+    ctx.rect(0, 0, depthWidth, depthHeight)
+    ctx.fillStyle = 'black'
+    ctx.fill()
+    if(c1 && c1.message){
+        ctx.textAlign = "center"
+        ctx.fillStyle = 'red'
+        ctx.font = "30px Arial"
+        ctx.fillText(c1.message, canvas.width/2, canvas.height/2)
+    }
 
-ctx2.beginPath()
-ctx2.rect(0, 0, depthWidth, depthHeight)
-ctx2.fillStyle = 'black'
-ctx2.fill()
+    ctx2.beginPath()
+    ctx2.rect(0, 0, depthWidth, depthHeight)
+    ctx2.fillStyle = 'black'
+    ctx2.fill()
+    if(c2 && c2.message){
+        ctx2.textAlign = "center"
+        ctx2.fillStyle = 'red'
+        ctx2.font = "30px Arial"
+        ctx2.fillText(c2.message, canvas2.width/2, canvas2.height/2)
+    }
+}
+clearCanvas()
 
 var blank_image = canvas.toDataURL('image/png', 1.0)
 
@@ -112,6 +127,7 @@ var bake_frames = []
 var folder_name = ''
 
 qs('#bake').addEventListener('click', () => {
+    clearCanvas()
 
     qs('#frames_ui').style.display = "block"
     qs('#bake_folder_ui').style.display = "none"
@@ -165,6 +181,7 @@ qsa('.back_to_bake').forEach(el => {
         qs('#bake_folder_ui').style.display = "block"
         qs('#frames_ui').style.display = "none"
         qs('#record_ui').style.display = "none"
+        clearCanvas()
     })
 })
 
@@ -285,6 +302,8 @@ var frames = []
 var cur_image_index = 0
 
 qs('#init_baking').addEventListener('click', () => {
+    clearCanvas({message: 'Baking started'}, {message: 'Baking started'})
+
     var files_start_frame = 0
     var files_end_frame = bake_frames.length != 0 ? bake_frames.length - 1 : 0
 
@@ -353,6 +372,8 @@ qs('#init_baking').addEventListener('click', () => {
         depth_color: blank_image,
         start_frame: lf.cur_frame, cur_frame: lf.cur_frame + 1, end_frame: lf.cur_frame + 2
     })
+
+    frames = frames.slice(0, -1)
 
     cur_image_index = 0
 
@@ -633,8 +654,8 @@ function bake_cur_image() {
         fs.writeFile(dir + '/import/00_IMPORT_ME.blend', files['00_IMPORT_ME.blend'], (err)=>{
             if (err) { }
         })
-        // fs.createReadStream(cwd+'/app/00_IMPORT_ME.blend')
-        //     .pipe(fs.createWriteStream(dir + '/import/00_IMPORT_ME.blend'))
+
+        clearCanvas({message: 'Baking complete'}, {message: 'Baking complete'})
     }
 }
 
@@ -790,6 +811,7 @@ s.on({
                         })
 
                         s.set({ p: 'cam', v: 'opened' })
+                        clearCanvas({message: 'Recording'}, {message: 'Recording'})
                     }
                 }
             })
@@ -828,6 +850,7 @@ s.on({
                 s.set({ p: 'rec_folder', v: '' })
             }
             s.set({ p: 'cam', v: 'closed' })
+            clearCanvas({message: 'Recording stopped'}, {message: 'Recording stopped'})
         }
     }
 })
@@ -835,6 +858,7 @@ s.on({
 qs('#record').addEventListener('click', () => {
     qs('#bake_folder_ui').style.display = 'none'
     qs('#record_ui').style.display = 'block'
+    clearCanvas()
 })
 qs('#init_recording').addEventListener('click', () => {
     s.set({ p: 'cam', v: 'open' })
@@ -877,11 +901,14 @@ s.on({
                 wss = new WebSocket.Server({ port: 8080 })
                 wss.on('connection', ws => {
                     ws.on('message', handleWsMessage)
+                    clearCanvas({message: `Client connected`})
                 })
+                clearCanvas({message: `Server started`}, {message:`at ws://${localIpAddress}:8080`})
             }
         } else if (connect == 'client') {
             if (!ws) {
                 ws = new WebSocket(qs('#connect_ipaddress').value)
+                clearCanvas({message: `Client started`}, {message:`at ${qs('#connect_ipaddress').value}`})
             }
             ws.on('message', handleWsMessage)
         }
