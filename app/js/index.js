@@ -839,15 +839,11 @@ s.on({
             })
         } else if (cam == 'close') {
             kinect.close()
-            var rec_folder = s.get('rec_folder')
-            if (rec_folder) {
-                depth_stream.close()
-                depth_stream_frames.close()
-                if (depth_color_opened) {
-                    depth_color_stream.close()
-                    depth_color_stream_frames.close()
-                }
-                s.set({ p: 'rec_folder', v: '' })
+            depth_stream.close()
+            depth_stream_frames.close()
+            if (depth_color_opened) {
+                depth_color_stream.close()
+                depth_color_stream_frames.close()
             }
             s.set({ p: 'cam', v: 'closed' })
             clearCanvas({message: 'Recording stopped'}, {message: 'Recording stopped'})
@@ -861,13 +857,25 @@ qs('#record').addEventListener('click', () => {
     clearCanvas()
 })
 qs('#init_recording').addEventListener('click', () => {
-    s.set({ p: 'cam', v: 'open' })
-    sendWsMessage({ action: 'setState', state: { p: 'cam', v: 'open' } })
+    var state = { p: 'cam', v: 'open' }
+    s.set(state)
+    sendWsMessage({ action: 'setState', state: state })
 })
 qs('#stop_recording').addEventListener('click', () => {
-    s.set({ p: 'cam', v: 'close' })
-    sendWsMessage({ action: 'setState', state: { p: 'cam', v: 'close' } })
+    var state = { p: 'cam', v: 'close' }
+    s.set(state)
+    sendWsMessage({ action: 'setState', state: state })
 })
+qs('#record_folder_name').addEventListener('input', (e) => {
+    var state = { p: 'folder_name', v: qs('#record_folder_name').value }
+    s.set(state)
+    sendWsMessage({ action: 'setState', state: state})
+})
+s.on({p:'folder_name', f: (e)=>{
+    var val = s.get(e.paths[0])
+    if (qs('#record_folder_name').value != val)
+        qs('#record_folder_name').value = val
+}})
 
 const { networkInterfaces } = require('os')
 const nets = networkInterfaces()
