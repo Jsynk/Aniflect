@@ -16,7 +16,7 @@ builder.build({
         win: {
             target: 'NSIS',
             // publish: ['github'],
-            // icon: 'build/icon.ico'
+            icon: 'build/icon.png',
         },
         // publish: [{
         //     provider: "github",

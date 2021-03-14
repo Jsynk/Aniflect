@@ -1,6 +1,6 @@
 {
     "name": "aniflect",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Aniflect(animation reflection) uses Kinect v2 to convert depth and/or color recordings to a grid with depth and/color animated textures with depth shape keys for Blender 2.8",
     "main": "main.js",
     "author": {

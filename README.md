@@ -60,12 +60,13 @@ So I built this so one can frame for frame reflect the animation recorded.
 ## TODO!?!?
 
 - Update workflow/tutorial gifs/videos!
-- Add icon? Dash silhoutte?
 - Replace bootstrap with custom style?
 - Add timed counter before recording?
 - Readd support for 2.79?
 - Add baking details baked 24 frames in 32s, when finished?
 - Add better ui messages rather then draw text on canvas?
+- Add messages like on server/client disconnect
+- Apply auto-update
 
 ## Donate
 
