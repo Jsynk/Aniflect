@@ -27,7 +27,7 @@ MIT
 ## Install precompiled
 
 - Go to [Releases](https://github.com/Jsynk/Aniflect/releases)
-- Download [Aniflect.1.0.0-win.zip](https://github.com/Jsynk/Aniflect/releases/download/v1.0.0/Aniflect.1.0.0-win.zip)
+- Download [Aniflect.1.0.1-win.zip](https://github.com/Jsynk/Aniflect/releases/download/v1.0.1/Aniflect.1.0.1-win.zip)
 - Extract Aniflect.app folder somewhere
 - Then run Aniflect Setup 1.0.0.exe to install
 
