@@ -26,10 +26,8 @@ MIT
 
 ## Install precompiled
 
-- Go to [Releases](https://github.com/Jsynk/Aniflect/releases)
-- Download [Aniflect.1.0.1-win.zip](https://github.com/Jsynk/Aniflect/releases/download/v1.0.1/Aniflect.1.0.1-win.zip)
-- Extract Aniflect.app folder somewhere
-- Then run Aniflect Setup 1.0.0.exe to install
+- Go to [Releases](https://github.com/Jsynk/Aniflect/releases/latest)
+- Download Aniflect-Setup-{version}.exe and install
 
 ## Install for development
 
@@ -59,6 +57,7 @@ So I built this so one can frame for frame reflect the animation recorded.
 
 ## TODO!?!?
 
+- Apply auto-update releases
 - Update workflow/tutorial gifs/videos!
 - Replace bootstrap with custom style?
 - Add timed counter before recording?
@@ -66,7 +65,6 @@ So I built this so one can frame for frame reflect the animation recorded.
 - Add baking details baked 24 frames in 32s, when finished?
 - Add better ui messages rather then draw text on canvas?
 - Add messages like on server/client disconnect
-- Apply auto-update
 
 ## Donate
 

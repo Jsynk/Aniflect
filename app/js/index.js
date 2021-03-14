@@ -16,12 +16,12 @@ const { shell, ipcRenderer } = require('electron')
 var cwd = process.cwd()
 var ud_dir = cwd
 
-ipcRenderer.on('message', function (event, text) { 
+ipcRenderer.on('message', function (event, text) {
     var json = text
     try {
         json = JSON.parse(text)
     } catch (err) { }
-    // console.log(json)
+    console.log(json)
     if(typeof json == 'object' && json != null){
         if(json.type == 'userData'){
             ud_dir = dir = json.path

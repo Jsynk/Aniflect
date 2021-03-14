@@ -13,7 +13,8 @@
     },
     "scripts": {
         "start": "electron .",
-        "build": "node ./build/electron-builder.js"
+        "build": "electron-builder",
+        "publish": "electron-builder -p always"
     },
     "dependencies": {
         "jsynk": "^2.0.0",
@@ -24,5 +25,31 @@
     "devDependencies": {
         "electron": "^11.2.3",
         "electron-builder": "^22.9.1"
+    },
+    "build": {
+        "appId": "com.electron.Aniflect",
+        "productName": "Aniflect",
+        "copyright": "Copyright (c) 2021 Jorge Andrés Guerra Guerra <jsynkk@gmail.com>",
+        "directories": {
+            "buildResources": "build",
+            "output": "dist",
+            "app": "."
+        },
+        "win": {
+            "target": "NSIS",
+            "publish": [
+                "github"
+            ],
+            "icon": "build/icon.png"
+        },
+        "publish": [
+            {
+                "provider": "github",
+                "owner": "Jsynk",
+                "repo": "Aniflect"
+            }
+        ],
+        "nodeVersion": "12.18.3",
+        "electronVersion": "11.3.0"
     }
 }
