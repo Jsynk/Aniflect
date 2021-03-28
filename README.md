@@ -65,6 +65,7 @@ So I built this so one can frame for frame reflect the animation recorded.
 - Add baking details baked 24 frames in 32s, when finished?
 - Add better ui messages rather then draw text on canvas?
 - Add messages like on server/client disconnect
+- Sort baking folders by nearest modified date
 
 ## Donate
 

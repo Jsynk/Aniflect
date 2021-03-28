@@ -646,7 +646,7 @@ function bake_cur_image() {
             if (err) { }
         })
 
-        var end_script = end_py_script
+        var end_script = end_py_script.replace(/{FOLDER_NAME}/g, folder_name)
         fs.writeFile(dir + '/import/02_end_import.py', end_script, (err) => {
             if (err) { }
         })
@@ -669,8 +669,8 @@ var import_py_script = [
     'init_filename = rel_path + "01_init_import.py"\r\n',
     'compile_script(init_filename)\r\n',
 
-    'files = listdir(rel_path)',
-    'for file in files:',
+    'files = listdir(rel_path)\r\n',
+    'for file in files:\r\n',
     '\tif file[:2] == "d_":\r\n',
     '\t\tcompile_script(file)\r\n',
 
@@ -683,7 +683,7 @@ var init_py_script = [
     'ob_name = "{FOLDER_NAME}_grid"\r\n',
     'ob = bpy.data.objects.get(ob_name)\r\n',
     'if ob is None:\r\n',
-    '\tbpy.ops.mesh.primitive_grid_add(x_subdivisions=512, y_subdivisions=424, size=200, calc_uvs=True, enter_editmode=False, align="WORLD", location=(0, 0, 0), scale=(1, 1, 1))\r\n',
+    '\tbpy.ops.mesh.primitive_grid_add(x_subdivisions=512, y_subdivisions=424, size=1, calc_uvs=True, enter_editmode=False, align="WORLD", location=(0, 0, 0), scale=(1, 1, 1))\r\n',
     '\tob = bpy.context.object\r\n',
     'ob.name = ob_name\r\n',
 
@@ -697,7 +697,7 @@ var init_py_script = [
     'bpy.context.area.ui_type = cur_ui_type\r\n',
     'bpy.ops.object.mode_set(mode="OBJECT", toggle=False)\r\n',
     'ob.scale[0] = -1\r\n',
-    'bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)\r\n',
+    'bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)\r\n',
     'bpy.ops.object.shade_smooth()\r\n',
 
     'rel_path = bpy.path.abspath("//")\r\n',
@@ -730,7 +730,10 @@ var init_py_script = [
 var end_py_script = [
     'import bpy\r\n',
     'bpy.context.object.rotation_euler[1] = 3.14159\r\n',
-    'bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)',
+    'bpy.ops.transform.resize(value=(0.03, 0.03, 0.03), orient_type="GLOBAL", orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type="GLOBAL", mirror=True, use_proportional_edit=False, proportional_edit_falloff="SMOOTH", proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)\r\n',
+    'bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)\r\n',
+    'bpy.ops.collection.create(name="{FOLDER_NAME}")\r\n',
+    'bpy.ops.object.collection_link(collection="{FOLDER_NAME}")\r\n',
 ].join('')
 
 var start_depth_py_script = [
