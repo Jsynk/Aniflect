@@ -730,7 +730,7 @@ var init_py_script = [
 var end_py_script = [
     'import bpy\r\n',
     'bpy.context.object.rotation_euler[1] = 3.14159\r\n',
-    'bpy.ops.transform.resize(value=(-0.03, 0.03, 0.03), orient_type="GLOBAL", orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type="GLOBAL", mirror=True, use_proportional_edit=False, proportional_edit_falloff="SMOOTH", proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)\r\n',
+    'bpy.ops.transform.resize(value=(-0.0316, 0.0316, 0.0316), orient_type="GLOBAL", orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type="GLOBAL", mirror=True, use_proportional_edit=False, proportional_edit_falloff="SMOOTH", proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)\r\n',
     'bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)\r\n',
     'bpy.ops.collection.create(name="{FOLDER_NAME}")\r\n',
     'bpy.ops.object.collection_link(collection="{FOLDER_NAME}")\r\n',
@@ -775,6 +775,7 @@ s.set({ p: '', v: {} })
 
 var depth_stream, depth_stream_frames, depth_color_stream, depth_color_stream_frames
 var depth_color_opened = false
+var kinect_opened = false
 s.on({
     p: 'cam', f: e => {
         var cam = s.get('cam')
@@ -792,21 +793,24 @@ s.on({
                         kinect = new Kinect2()
                     }
                     if (kinect.open()) {
-                        kinect.on('multiSourceFrame', frame => {
-                            if (rec_folder) {
-                                var time = new Date().getTime()
-
-                                var depth_buffer = frame.rawDepth.buffer
-                                depth_stream.write(depth_buffer)
-                                depth_stream_frames.write(time.toString() + ',')
-
-                                if (record_color) {
-                                    var depth_color_buffer = frame.depthColor.buffer
-                                    depth_color_stream.write(depth_color_buffer)
-                                    depth_color_stream_frames.write(time.toString() + ',')
+                        if(!kinect_opened){
+                            kinect_opened = true
+                            kinect.on('multiSourceFrame', frame => {
+                                if (rec_folder) {
+                                    var time = new Date().getTime()
+    
+                                    var depth_buffer = frame.rawDepth.buffer
+                                    depth_stream.write(depth_buffer)
+                                    depth_stream_frames.write(time.toString() + ',')
+    
+                                    if (record_color) {
+                                        var depth_color_buffer = frame.depthColor.buffer
+                                        depth_color_stream.write(depth_color_buffer)
+                                        depth_color_stream_frames.write(time.toString() + ',')
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
 
                         var frameTypes = record_color ? Kinect2.FrameType.rawDepth | Kinect2.FrameType.depthColor : Kinect2.FrameType.rawDepth
                         kinect.openMultiSourceReader({
