@@ -730,7 +730,7 @@ var init_py_script = [
 var end_py_script = [
     'import bpy\r\n',
     'bpy.context.object.rotation_euler[1] = 3.14159\r\n',
-    'bpy.ops.transform.resize(value=(-0.0316, 0.0316, 0.0316), orient_type="GLOBAL", orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type="GLOBAL", mirror=True, use_proportional_edit=False, proportional_edit_falloff="SMOOTH", proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)\r\n',
+    'bpy.ops.transform.resize(value=(-0.0313, 0.0313, 0.0313), orient_type="GLOBAL", orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type="GLOBAL", mirror=True, use_proportional_edit=False, proportional_edit_falloff="SMOOTH", proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)\r\n',
     'bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)\r\n',
     'bpy.ops.collection.create(name="{FOLDER_NAME}")\r\n',
     'bpy.ops.object.collection_link(collection="{FOLDER_NAME}")\r\n',
